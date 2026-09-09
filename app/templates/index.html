@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Resume Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">AI • NLP • Career Analytics</p>
+      <h1>AI Resume Analyzer</h1>
+      <p>Upload your resume and compare it with a target job description.</p>
+    </section>
+
+    <section class="card">
+      <form method="post" enctype="multipart/form-data">
+        <label>Resume PDF</label>
+        <input type="file" name="resume" accept="application/pdf" required>
+
+        <label>Job Description</label>
+        <textarea name="job_description" rows="10" placeholder="Paste the job description here..." required></textarea>
+
+        <button type="submit">Analyze Resume →</button>
+      </form>
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    </section>
+
+    {% if result %}
+    <section class="results">
+      <div class="score card">
+        <span>ATS-style compatibility</span>
+        <strong>{{ result.ats_style_score }}%</strong>
+        <small>Project metric based on skill match and text similarity.</small>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Matched Skills</h2>
+          <div class="tags">
+            {% for skill in result.matched %}<span class="tag good">{{ skill }}</span>{% else %}<span>No matching skills found.</span>{% endfor %}
+          </div>
+        </div>
+        <div class="card">
+          <h2>Missing Skills</h2>
+          <div class="tags">
+            {% for skill in result.missing %}<span class="tag missing">{{ skill }}</span>{% else %}<span>No missing skills detected.</span>{% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card"><h2>Skill Match</h2><p class="big">{{ result.match_percent }}%</p></div>
+        <div class="card"><h2>Text Similarity</h2><p class="big">{{ result.text_similarity }}%</p></div>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>
