@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from skill_extractor import extract_skills
-from matcher import skill_match, text_similarity
+from src.skill_extractor import extract_skills
+from src.matcher import skill_match, text_similarity
 
 
 def analyze_resume(resume_text: str, job_description: str) -> dict:
